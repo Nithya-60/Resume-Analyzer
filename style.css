@@ -192,3 +192,29 @@ input[type="file"] {
     background: #fee2e2;
     color: red;
 }
+
+/* ===== FIX RESUME PREVIEW OVERFLOW ===== */
+
+.preview-card {
+    margin-bottom: 24px;
+    overflow: hidden; /* prevents content spilling outside */
+}
+
+.resume-preview {
+    margin: 0;
+    white-space: pre-wrap;       /* keeps formatting */
+    word-break: break-word;      /* breaks long words */
+    overflow-wrap: anywhere;     /* prevents overflow */
+    overflow-x: hidden;
+    overflow-y: auto;
+    line-height: 1.7;
+    color: #374151;
+    background: #f8fafc;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 18px;
+    max-height: 320px;           /* scroll instead of overflow */
+    width: 100%;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+}

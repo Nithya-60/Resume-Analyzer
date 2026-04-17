@@ -1,10 +1,10 @@
 {
   "name": "resume-ats-analyzer",
   "version": "2.0.0",
-  "description": "Frontend-only ATS resume analyzer with PDF and DOCX parsing",
+  "description": "Frontend-only ATS resume analyzer with PDF, DOCX and TXT parsing",
   "main": "script.js",
   "scripts": {
-    "test": "node tests/test.js"
+    "test": "node tests-test.js"
   },
   "license": "MIT"
 }
