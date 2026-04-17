@@ -1,1 +1,59 @@
-["python","java","cloud","aws","docker","devops","react","node"]
+{
+  "keywordGroups": [
+    {
+      "group": "Programming",
+      "keywords": [
+        { "label": "Python", "weight": 4, "aliases": ["python"] },
+        { "label": "Java", "weight": 3, "aliases": ["java"] },
+        { "label": "JavaScript", "weight": 3, "aliases": ["javascript", "js"] },
+        { "label": "SQL", "weight": 3, "aliases": ["sql", "mysql", "postgresql"] }
+      ]
+    },
+    {
+      "group": "Web Development",
+      "keywords": [
+        { "label": "HTML", "weight": 2, "aliases": ["html"] },
+        { "label": "CSS", "weight": 2, "aliases": ["css"] },
+        { "label": "React", "weight": 4, "aliases": ["react", "reactjs"] },
+        { "label": "Node.js", "weight": 4, "aliases": ["node", "node.js"] }
+      ]
+    },
+    {
+      "group": "Cloud & DevOps",
+      "keywords": [
+        { "label": "Cloud", "weight": 3, "aliases": ["cloud", "cloud computing"] },
+        { "label": "AWS", "weight": 4, "aliases": ["aws", "amazon web services"] },
+        { "label": "Docker", "weight": 4, "aliases": ["docker"] },
+        { "label": "Jenkins", "weight": 4, "aliases": ["jenkins"] },
+        { "label": "DevOps", "weight": 4, "aliases": ["devops"] },
+        { "label": "CI/CD", "weight": 4, "aliases": ["ci/cd", "continuous integration", "continuous delivery"] }
+      ]
+    },
+    {
+      "group": "Data & AI",
+      "keywords": [
+        { "label": "Machine Learning", "weight": 4, "aliases": ["machine learning", "ml"] },
+        { "label": "Artificial Intelligence", "weight": 4, "aliases": ["artificial intelligence", "ai"] },
+        { "label": "Data Analysis", "weight": 3, "aliases": ["data analysis", "data analytics", "analytics"] }
+      ]
+    },
+    {
+      "group": "Cybersecurity",
+      "keywords": [
+        { "label": "Cybersecurity", "weight": 4, "aliases": ["cybersecurity", "cyber security"] },
+        { "label": "Ethical Hacking", "weight": 4, "aliases": ["ethical hacking"] },
+        { "label": "Network Security", "weight": 3, "aliases": ["network security"] }
+      ]
+    },
+    {
+      "group": "Professional Signals",
+      "keywords": [
+        { "label": "Internship", "weight": 3, "aliases": ["internship", "intern"] },
+        { "label": "Project", "weight": 2, "aliases": ["project", "projects"] },
+        { "label": "Certification", "weight": 2, "aliases": ["certification", "certifications", "certified"] },
+        { "label": "Agile", "weight": 2, "aliases": ["agile"] },
+        { "label": "Problem Solving", "weight": 2, "aliases": ["problem solving", "problem-solving"] }
+      ]
+    }
+  ]
+}
