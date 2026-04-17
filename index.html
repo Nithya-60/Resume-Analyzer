@@ -11,10 +11,7 @@
 
     <link rel="stylesheet" href="style.css" />
 
-    <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-    <!-- Mammoth.js for DOCX -->
     <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
 </head>
 <body>
@@ -28,6 +25,20 @@
             </p>
 
             <div class="upload-box">
+                <div style="margin-bottom: 16px;">
+                    <label for="roleSelect" style="display:block; margin-bottom:8px; font-weight:600;">
+                        Select Role
+                    </label>
+                    <select id="roleSelect" style="padding:10px 12px; border-radius:10px; border:1px solid #d1d5db; font-family:Inter,sans-serif; min-width:220px;">
+                        <option value="auto">Auto Detect</option>
+                        <option value="software">Software Engineer</option>
+                        <option value="cybersecurity">Cybersecurity</option>
+                        <option value="data">Data Analyst / Data Science</option>
+                        <option value="mechanical">Mechanical Engineer</option>
+                        <option value="management">Management / Business</option>
+                    </select>
+                </div>
+
                 <label for="resumeInput" class="upload-label">
                     <span class="upload-icon">📄</span>
                     <span>
@@ -35,8 +46,10 @@
                         <small>PDF, DOCX, or TXT</small>
                     </span>
                 </label>
+
                 <input type="file" id="resumeInput" accept=".pdf,.docx,.txt" />
                 <p id="fileName" class="file-name">No file selected</p>
+                <p id="detectedDomain" class="file-name">Detected Role: —</p>
             </div>
         </section>
 

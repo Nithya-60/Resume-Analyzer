@@ -9,21 +9,29 @@ function assert(condition, message) {
 const raw = fs.readFileSync("keywords.json", "utf8");
 const data = JSON.parse(raw);
 
-assert(data.keywordGroups, "keywordGroups is missing");
-assert(Array.isArray(data.keywordGroups), "keywordGroups must be an array");
-assert(data.keywordGroups.length > 0, "keywordGroups should not be empty");
+assert(data.domains, "domains is missing");
+assert(typeof data.domains === "object", "domains must be an object");
+assert(data.general, "general is missing");
+assert(Array.isArray(data.general.keywords), "general.keywords must be an array");
 
-for (const group of data.keywordGroups) {
-    assert(group.group, "Each group must have a group name");
-    assert(Array.isArray(group.keywords), `Group "${group.group}" must have a keywords array`);
-    assert(group.keywords.length > 0, `Group "${group.group}" must not be empty`);
+for (const [domainKey, domainValue] of Object.entries(data.domains)) {
+    assert(domainValue.label, `Domain ${domainKey} must have a label`);
+    assert(Array.isArray(domainValue.keywords), `Domain ${domainKey} must have keywords array`);
+    assert(domainValue.keywords.length > 0, `Domain ${domainKey} cannot be empty`);
 
-    for (const keyword of group.keywords) {
-        assert(keyword.label, "Each keyword needs a label");
-        assert(typeof keyword.weight === "number", `Keyword "${keyword.label}" must have numeric weight`);
-        assert(Array.isArray(keyword.aliases), `Keyword "${keyword.label}" must have aliases array`);
-        assert(keyword.aliases.length > 0, `Keyword "${keyword.label}" must have at least one alias`);
+    for (const keyword of domainValue.keywords) {
+        assert(keyword.label, `Keyword in ${domainKey} is missing label`);
+        assert(typeof keyword.weight === "number", `Keyword ${keyword.label} in ${domainKey} must have numeric weight`);
+        assert(Array.isArray(keyword.aliases), `Keyword ${keyword.label} in ${domainKey} must have aliases array`);
+        assert(keyword.aliases.length > 0, `Keyword ${keyword.label} in ${domainKey} must have at least one alias`);
     }
+}
+
+for (const keyword of data.general.keywords) {
+    assert(keyword.label, "General keyword missing label");
+    assert(typeof keyword.weight === "number", `General keyword ${keyword.label} must have numeric weight`);
+    assert(Array.isArray(keyword.aliases), `General keyword ${keyword.label} must have aliases array`);
+    assert(keyword.aliases.length > 0, `General keyword ${keyword.label} must have aliases`);
 }
 
 console.log("All tests passed.");

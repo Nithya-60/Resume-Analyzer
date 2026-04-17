@@ -1,5 +1,7 @@
 const resumeInput = document.getElementById("resumeInput");
+const roleSelect = document.getElementById("roleSelect");
 const fileNameEl = document.getElementById("fileName");
+const detectedDomainEl = document.getElementById("detectedDomain");
 const scoreValueEl = document.getElementById("scoreValue");
 const scoreLabelEl = document.getElementById("scoreLabel");
 const ringProgressEl = document.getElementById("ringProgress");
@@ -43,8 +45,13 @@ async function handleFileUpload(event) {
             return res.json();
         });
 
-        const analysis = analyzeResume(cleanedText, config);
-        updateUI(analysis, cleanedText);
+        const selectedRole = roleSelect.value;
+        const activeDomain = selectedRole === "auto"
+            ? detectBestDomain(cleanedText, config)
+            : selectedRole;
+
+        const analysis = analyzeResume(cleanedText, config, activeDomain);
+        updateUI(analysis, cleanedText, config);
     } catch (error) {
         console.error("Resume analysis error:", error);
         resetUIWithError(error.message || "Could not analyze the resume.");
@@ -54,17 +61,9 @@ async function handleFileUpload(event) {
 async function extractTextFromFile(file) {
     const extension = file.name.split(".").pop().toLowerCase();
 
-    if (extension === "txt") {
-        return extractTextFromTXT(file);
-    }
-
-    if (extension === "pdf") {
-        return extractTextFromPDF(file);
-    }
-
-    if (extension === "docx") {
-        return extractTextFromDOCX(file);
-    }
+    if (extension === "txt") return extractTextFromTXT(file);
+    if (extension === "pdf") return extractTextFromPDF(file);
+    if (extension === "docx") return extractTextFromDOCX(file);
 
     throw new Error("Unsupported file type. Please upload PDF, DOCX, or TXT.");
 }
@@ -81,20 +80,14 @@ async function extractTextFromPDF(file) {
     const arrayBuffer = await file.arrayBuffer();
     const typedArray = new Uint8Array(arrayBuffer);
 
-    const pdf = await pdfjsLib.getDocument({
-        data: typedArray
-    }).promise;
+    const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
 
     let fullText = "";
 
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
         const page = await pdf.getPage(pageNum);
         const textContent = await page.getTextContent();
-
-        const pageText = textContent.items
-            .map((item) => item.str)
-            .join(" ");
-
+        const pageText = textContent.items.map((item) => item.str).join(" ");
         fullText += pageText + "\n";
     }
 
@@ -120,7 +113,7 @@ function normalizeText(text) {
         .trim();
 }
 
-function analyzeResume(text, config) {
+function analyzeResume(text, config, activeDomain) {
     const lowerText = text.toLowerCase();
     const words = lowerText.split(/\s+/).filter(Boolean);
     const wordCount = words.length;
@@ -128,13 +121,15 @@ function analyzeResume(text, config) {
     const sections = checkSections(lowerText);
     const contactChecks = checkContactInfo(text);
     const formattingChecks = checkReadability(text, wordCount);
-    const keywordResult = checkKeywords(lowerText, config);
+    const domainKeywordResult = checkDomainKeywords(lowerText, config, activeDomain);
+    const generalKeywordResult = checkGeneralKeywords(lowerText, config);
 
     let score = 0;
-    score += sections.score;         // 30 max
-    score += contactChecks.score;    // 20 max
-    score += formattingChecks.score; // 15 max
-    score += keywordResult.score;    // 35 max
+    score += sections.score;             // /30
+    score += contactChecks.score;        // /20
+    score += formattingChecks.score;     // /15
+    score += domainKeywordResult.score;  // /25
+    score += generalKeywordResult.score; // /10
 
     score = Math.max(0, Math.min(100, Math.round(score)));
 
@@ -142,8 +137,11 @@ function analyzeResume(text, config) {
         sections,
         contactChecks,
         formattingChecks,
-        keywordResult,
-        wordCount
+        domainKeywordResult,
+        generalKeywordResult,
+        wordCount,
+        activeDomain,
+        config
     );
 
     return {
@@ -152,48 +150,47 @@ function analyzeResume(text, config) {
         sections,
         contactChecks,
         formattingChecks,
-        keywordResult,
+        domainKeywordResult,
+        generalKeywordResult,
+        activeDomain,
         suggestions
     };
 }
 
+function detectBestDomain(text, config) {
+    const lowerText = text.toLowerCase();
+    let bestDomain = "software";
+    let bestScore = -1;
+
+    for (const [domainKey, domainObj] of Object.entries(config.domains || {})) {
+        let hits = 0;
+        for (const item of domainObj.keywords || []) {
+            const found = (item.aliases || []).some(alias =>
+                smartIncludes(lowerText, alias.toLowerCase())
+            );
+            if (found) {
+                hits += item.weight || 1;
+            }
+        }
+
+        if (hits > bestScore) {
+            bestScore = hits;
+            bestDomain = domainKey;
+        }
+    }
+
+    return bestDomain;
+}
+
 function checkSections(lowerText) {
     const sectionRules = [
-        {
-            label: "Contact Information",
-            patterns: ["email", "phone", "linkedin", "github"],
-            points: 4
-        },
-        {
-            label: "Professional Summary / Objective",
-            patterns: ["summary", "objective", "profile"],
-            points: 5
-        },
-        {
-            label: "Skills Section",
-            patterns: ["skills", "technical skills", "core competencies"],
-            points: 5
-        },
-        {
-            label: "Experience Section",
-            patterns: ["experience", "work experience", "internship", "employment"],
-            points: 6
-        },
-        {
-            label: "Education Section",
-            patterns: ["education", "academic", "university", "college"],
-            points: 5
-        },
-        {
-            label: "Projects Section",
-            patterns: ["projects", "academic projects", "personal projects"],
-            points: 3
-        },
-        {
-            label: "Certifications Section",
-            patterns: ["certifications", "certificates", "certified"],
-            points: 2
-        }
+        { label: "Contact Information", patterns: ["email", "phone", "linkedin", "github"], points: 4 },
+        { label: "Professional Summary / Objective", patterns: ["summary", "objective", "profile"], points: 5 },
+        { label: "Skills Section", patterns: ["skills", "technical skills", "core competencies"], points: 5 },
+        { label: "Experience Section", patterns: ["experience", "work experience", "internship", "employment"], points: 6 },
+        { label: "Education Section", patterns: ["education", "academic", "university", "college"], points: 5 },
+        { label: "Projects Section", patterns: ["projects", "academic projects", "personal projects"], points: 3 },
+        { label: "Certifications Section", patterns: ["certifications", "certificates", "certified"], points: 2 }
     ];
 
     let score = 0;
@@ -201,15 +198,8 @@ function checkSections(lowerText) {
 
     for (const rule of sectionRules) {
         const found = rule.patterns.some((pattern) => lowerText.includes(pattern));
-
-        if (found) {
-            score += rule.points;
-        }
-
-        results.push({
-            label: rule.label,
-            found
-        });
+        if (found) score += rule.points;
+        results.push({ label: rule.label, found });
     }
 
     return { score, results };
@@ -246,7 +236,7 @@ function checkReadability(text, wordCount) {
     const hasGoodLength = wordCount >= 250 && wordCount <= 900;
     const hasDates = /\b(20\d{2}|19\d{2})\b/.test(text);
     const hasActionVerbs =
-        /(developed|built|designed|implemented|created|analyzed|led|improved|optimized|managed|collaborated|engineered|hosted|processed|presented)/i.test(text);
+        /(developed|built|designed|implemented|created|analyzed|led|improved|optimized|managed|collaborated|engineered|hosted|processed|presented|secured|tested|maintained|planned|executed)/i.test(text);
 
     if (hasEnoughBullets) score += 4;
     if (hasGoodLength) score += 4;
@@ -261,49 +251,90 @@ function checkReadability(text, wordCount) {
     return { score, results };
 }
 
-function checkKeywords(lowerText, config) {
+function checkDomainKeywords(lowerText, config, activeDomain) {
     const matched = [];
     const missing = [];
+
+    const domain = config.domains?.[activeDomain];
+    if (!domain || !Array.isArray(domain.keywords)) {
+        return { score: 0, matched: [], missing: [] };
+    }
+
     let earned = 0;
     let possible = 0;
 
-    if (!config || !Array.isArray(config.keywordGroups)) {
-        return {
-            score: 0,
-            matched: [],
-            missing: []
-        };
-    }
+    for (const item of domain.keywords) {
+        possible += item.weight || 0;
+        const found = (item.aliases || []).some(alias =>
+            smartIncludes(lowerText, alias.toLowerCase())
+        );
 
-    for (const group of config.keywordGroups) {
-        if (!Array.isArray(group.keywords)) continue;
-
-        for (const item of group.keywords) {
-            possible += item.weight || 0;
-
-            const found = Array.isArray(item.aliases) &&
-                item.aliases.some((alias) => lowerText.includes(alias.toLowerCase()));
-
-            if (found) {
-                earned += item.weight || 0;
-                matched.push(item.label);
-            } else {
-                missing.push(item.label);
-            }
+        if (found) {
+            earned += item.weight || 0;
+            matched.push(item.label);
+        } else {
+            missing.push(item.label);
         }
     }
 
-    const rawKeywordScore = possible === 0 ? 0 : (earned / possible) * 35;
+    const scaledScore = possible === 0 ? 0 : (earned / possible) * 25;
 
     return {
-        score: Math.round(rawKeywordScore),
+        score: Math.round(scaledScore),
         matched,
         missing
     };
 }
 
-function buildSuggestions(sections, contactChecks, formattingChecks, keywordResult, wordCount) {
+function checkGeneralKeywords(lowerText, config) {
+    const matched = [];
+    const missing = [];
+
+    const general = config.general?.keywords || [];
+    let earned = 0;
+    let possible = 0;
+
+    for (const item of general) {
+        possible += item.weight || 0;
+        const found = (item.aliases || []).some(alias =>
+            smartIncludes(lowerText, alias.toLowerCase())
+        );
+
+        if (found) {
+            earned += item.weight || 0;
+            matched.push(item.label);
+        } else {
+            missing.push(item.label);
+        }
+    }
+
+    const scaledScore = possible === 0 ? 0 : (earned / possible) * 10;
+
+    return {
+        score: Math.round(scaledScore),
+        matched,
+        missing
+    };
+}
+
+function smartIncludes(text, phrase) {
+    const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(`(^|\\W)${escaped}(\\W|$)`, "i");
+    return pattern.test(text);
+}
+
+function buildSuggestions(
+    sections,
+    contactChecks,
+    formattingChecks,
+    domainKeywordResult,
+    generalKeywordResult,
+    wordCount,
+    activeDomain,
+    config
+) {
     const suggestions = [];
+    const domainLabel = config.domains?.[activeDomain]?.label || activeDomain;
 
     if (!sections.results.find((x) => x.label.includes("Summary") && x.found)) {
         suggestions.push("Add a short professional summary near the top of the resume.");
@@ -317,16 +348,12 @@ function buildSuggestions(sections, contactChecks, formattingChecks, keywordResu
         suggestions.push("Add a LinkedIn profile link to improve professional visibility.");
     }
 
-    if (!contactChecks.results.find((x) => x.label.includes("GitHub") && x.found)) {
-        suggestions.push("Add a GitHub profile link if you have technical projects.");
-    }
-
     if (!formattingChecks.results.find((x) => x.label.includes("bullet") && x.found)) {
         suggestions.push("Use more bullet points for readability and ATS-friendliness.");
     }
 
     if (!formattingChecks.results.find((x) => x.label.includes("action verbs") && x.found)) {
-        suggestions.push("Start bullet points with strong action verbs like Developed, Built, or Implemented.");
+        suggestions.push("Start bullet points with strong action verbs like Developed, Built, Implemented, or Managed.");
     }
 
     if (wordCount < 250) {
@@ -337,40 +364,54 @@ function buildSuggestions(sections, contactChecks, formattingChecks, keywordResu
         suggestions.push("Your resume may be too long. Keep it concise and focused on relevant achievements.");
     }
 
-    if (keywordResult.missing.length > 0) {
+    if (domainKeywordResult.missing.length > 0) {
         suggestions.push(
-            `Consider adding relevant keywords such as: ${keywordResult.missing.slice(0, 8).join(", ")}.`
+            `For the selected role (${domainLabel}), consider adding relevant skills only if they are genuine: ${domainKeywordResult.missing.slice(0, 6).join(", ")}.`
+        );
+    }
+
+    if (generalKeywordResult.missing.length > 0) {
+        suggestions.push(
+            `Strengthen common resume signals such as: ${generalKeywordResult.missing.slice(0, 5).join(", ")}.`
         );
     }
 
     if (suggestions.length === 0) {
-        suggestions.push("Your resume looks strong overall. Fine-tune wording to better match the target job description.");
+        suggestions.push("Your resume looks strong overall. Fine-tune wording to better match the target role.");
     }
 
     return suggestions;
 }
 
-function updateUI(analysis, cleanedText) {
+function updateUI(analysis, cleanedText, config) {
     const {
         score,
         wordCount,
         sections,
         contactChecks,
         formattingChecks,
-        keywordResult,
+        domainKeywordResult,
+        generalKeywordResult,
+        activeDomain,
         suggestions
     } = analysis;
+
+    const domainLabel = config.domains?.[activeDomain]?.label || activeDomain;
+    detectedDomainEl.textContent = `Detected Role: ${domainLabel}`;
 
     scoreValueEl.textContent = score;
     scoreLabelEl.textContent = getScoreLabel(score);
     setScoreRing(score);
 
-    matchedCountEl.textContent = keywordResult.matched.length;
-    missingCountEl.textContent = keywordResult.missing.length;
+    const allMatched = [...domainKeywordResult.matched, ...generalKeywordResult.matched];
+    const allMissing = [...domainKeywordResult.missing, ...generalKeywordResult.missing];
+
+    matchedCountEl.textContent = allMatched.length;
+    missingCountEl.textContent = allMissing.length;
     textLengthEl.textContent = wordCount;
 
-    renderTags(matchedKeywordsEl, keywordResult.matched, "matched");
-    renderTags(missingKeywordsEl, keywordResult.missing, "missing");
+    renderTags(matchedKeywordsEl, allMatched, "matched");
+    renderTags(missingKeywordsEl, allMissing, "missing");
 
     renderCheckList(sectionChecksEl, [
         ...sections.results,
@@ -436,6 +477,7 @@ function getScoreLabel(score) {
 function resetUIForNewUpload() {
     scoreValueEl.textContent = "0";
     scoreLabelEl.textContent = "Analyzing resume...";
+    detectedDomainEl.textContent = "Detected Role: —";
     setScoreRing(0);
 
     matchedCountEl.textContent = "0";
@@ -452,6 +494,7 @@ function resetUIForNewUpload() {
 function resetUIWithError(message) {
     scoreValueEl.textContent = "0";
     scoreLabelEl.textContent = message;
+    detectedDomainEl.textContent = "Detected Role: —";
     setScoreRing(0);
 
     matchedCountEl.textContent = "0";

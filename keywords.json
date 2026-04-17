@@ -1,59 +1,153 @@
 {
-  "keywordGroups": [
-    {
-      "group": "Programming",
+  "domains": {
+    "software": {
+      "label": "Software Engineer",
       "keywords": [
         { "label": "Python", "weight": 4, "aliases": ["python"] },
-        { "label": "Java", "weight": 3, "aliases": ["java"] },
-        { "label": "JavaScript", "weight": 3, "aliases": ["javascript", "js"] },
-        { "label": "SQL", "weight": 3, "aliases": ["sql", "mysql", "postgresql"] }
-      ]
-    },
-    {
-      "group": "Web Development",
-      "keywords": [
-        { "label": "HTML", "weight": 2, "aliases": ["html"] },
-        { "label": "CSS", "weight": 2, "aliases": ["css"] },
+        { "label": "Java", "weight": 4, "aliases": ["java"] },
+        { "label": "C", "weight": 2, "aliases": ["c language"] },
+        { "label": "C++", "weight": 3, "aliases": ["c++", "cpp"] },
+        { "label": "JavaScript", "weight": 4, "aliases": ["javascript", "js"] },
+        { "label": "TypeScript", "weight": 3, "aliases": ["typescript", "ts"] },
+        { "label": "HTML", "weight": 2, "aliases": ["html", "html5"] },
+        { "label": "CSS", "weight": 2, "aliases": ["css", "css3"] },
         { "label": "React", "weight": 4, "aliases": ["react", "reactjs"] },
-        { "label": "Node.js", "weight": 4, "aliases": ["node", "node.js"] }
+        { "label": "Angular", "weight": 3, "aliases": ["angular"] },
+        { "label": "Vue", "weight": 3, "aliases": ["vue", "vuejs"] },
+        { "label": "Node.js", "weight": 4, "aliases": ["node.js", "nodejs", "node"] },
+        { "label": "Express.js", "weight": 3, "aliases": ["express", "express.js"] },
+        { "label": "SQL", "weight": 4, "aliases": ["sql", "mysql", "postgresql", "sqlite"] },
+        { "label": "MongoDB", "weight": 3, "aliases": ["mongodb", "mongo db"] },
+        { "label": "Git", "weight": 3, "aliases": ["git", "github", "gitlab"] },
+        { "label": "REST API", "weight": 3, "aliases": ["rest api", "restful api", "api development"] },
+        { "label": "JSON", "weight": 2, "aliases": ["json"] },
+        { "label": "OOP", "weight": 3, "aliases": ["oop", "object oriented programming", "object-oriented programming"] },
+        { "label": "Data Structures", "weight": 3, "aliases": ["data structures", "dsa"] },
+        { "label": "Algorithms", "weight": 3, "aliases": ["algorithms", "algorithm design"] },
+        { "label": "Testing", "weight": 2, "aliases": ["unit testing", "testing", "test cases"] },
+        { "label": "Debugging", "weight": 2, "aliases": ["debugging", "bug fixing"] },
+        { "label": "Agile", "weight": 2, "aliases": ["agile", "scrum"] }
       ]
     },
-    {
-      "group": "Cloud & DevOps",
+    "cybersecurity": {
+      "label": "Cybersecurity",
       "keywords": [
-        { "label": "Cloud", "weight": 3, "aliases": ["cloud", "cloud computing"] },
-        { "label": "AWS", "weight": 4, "aliases": ["aws", "amazon web services"] },
-        { "label": "Docker", "weight": 4, "aliases": ["docker"] },
-        { "label": "Jenkins", "weight": 4, "aliases": ["jenkins"] },
-        { "label": "DevOps", "weight": 4, "aliases": ["devops"] },
-        { "label": "CI/CD", "weight": 4, "aliases": ["ci/cd", "continuous integration", "continuous delivery"] }
+        { "label": "Cybersecurity", "weight": 5, "aliases": ["cybersecurity", "cyber security"] },
+        { "label": "Ethical Hacking", "weight": 5, "aliases": ["ethical hacking", "penetration testing", "pentesting"] },
+        { "label": "Network Security", "weight": 4, "aliases": ["network security"] },
+        { "label": "Information Security", "weight": 4, "aliases": ["information security", "infosec"] },
+        { "label": "Vulnerability Assessment", "weight": 4, "aliases": ["vulnerability assessment", "vapt", "vulnerability scanning"] },
+        { "label": "SIEM", "weight": 3, "aliases": ["siem", "security information and event management"] },
+        { "label": "SOC", "weight": 3, "aliases": ["soc", "security operations center"] },
+        { "label": "Incident Response", "weight": 4, "aliases": ["incident response", "security incident"] },
+        { "label": "Firewall", "weight": 3, "aliases": ["firewall", "firewalls"] },
+        { "label": "IDS/IPS", "weight": 3, "aliases": ["ids", "ips", "intrusion detection", "intrusion prevention"] },
+        { "label": "Cryptography", "weight": 4, "aliases": ["cryptography", "encryption", "decryption"] },
+        { "label": "Kali Linux", "weight": 4, "aliases": ["kali linux", "kali"] },
+        { "label": "Wireshark", "weight": 3, "aliases": ["wireshark"] },
+        { "label": "Nmap", "weight": 3, "aliases": ["nmap"] },
+        { "label": "Burp Suite", "weight": 3, "aliases": ["burp suite", "burp"] },
+        { "label": "OWASP", "weight": 3, "aliases": ["owasp", "owasp top 10"] },
+        { "label": "Risk Assessment", "weight": 3, "aliases": ["risk assessment", "risk analysis"] },
+        { "label": "Authentication", "weight": 2, "aliases": ["authentication", "authorization"] },
+        { "label": "Access Control", "weight": 2, "aliases": ["access control", "identity access management", "iam"] },
+        { "label": "Security Audit", "weight": 3, "aliases": ["security audit", "audit"] }
       ]
     },
-    {
-      "group": "Data & AI",
+    "data": {
+      "label": "Data Analyst / Data Science",
       "keywords": [
+        { "label": "Data Analysis", "weight": 5, "aliases": ["data analysis", "data analytics", "analytics"] },
+        { "label": "Python", "weight": 4, "aliases": ["python"] },
+        { "label": "R", "weight": 3, "aliases": ["r language"] },
+        { "label": "SQL", "weight": 5, "aliases": ["sql", "mysql", "postgresql"] },
+        { "label": "Excel", "weight": 4, "aliases": ["excel", "microsoft excel"] },
+        { "label": "Power BI", "weight": 4, "aliases": ["power bi", "powerbi"] },
+        { "label": "Tableau", "weight": 4, "aliases": ["tableau"] },
+        { "label": "Pandas", "weight": 4, "aliases": ["pandas"] },
+        { "label": "NumPy", "weight": 3, "aliases": ["numpy"] },
         { "label": "Machine Learning", "weight": 4, "aliases": ["machine learning", "ml"] },
-        { "label": "Artificial Intelligence", "weight": 4, "aliases": ["artificial intelligence", "ai"] },
-        { "label": "Data Analysis", "weight": 3, "aliases": ["data analysis", "data analytics", "analytics"] }
+        { "label": "Statistics", "weight": 4, "aliases": ["statistics", "statistical analysis"] },
+        { "label": "Data Visualization", "weight": 4, "aliases": ["data visualization", "visualization", "dashboard"] },
+        { "label": "Dashboarding", "weight": 3, "aliases": ["dashboard", "dashboards", "reporting"] },
+        { "label": "ETL", "weight": 3, "aliases": ["etl", "extract transform load"] },
+        { "label": "Data Cleaning", "weight": 3, "aliases": ["data cleaning", "data preprocessing", "data wrangling"] },
+        { "label": "Business Intelligence", "weight": 3, "aliases": ["business intelligence", "bi"] },
+        { "label": "IBM Cognos", "weight": 3, "aliases": ["ibm cognos", "cognos"] },
+        { "label": "Predictive Analytics", "weight": 3, "aliases": ["predictive analytics", "prediction model"] },
+        { "label": "Reporting", "weight": 2, "aliases": ["reporting", "reports"] },
+        { "label": "Data Mining", "weight": 3, "aliases": ["data mining"] }
       ]
     },
-    {
-      "group": "Cybersecurity",
+    "mechanical": {
+      "label": "Mechanical Engineer",
       "keywords": [
-        { "label": "Cybersecurity", "weight": 4, "aliases": ["cybersecurity", "cyber security"] },
-        { "label": "Ethical Hacking", "weight": 4, "aliases": ["ethical hacking"] },
-        { "label": "Network Security", "weight": 3, "aliases": ["network security"] }
+        { "label": "Mechanical Engineering", "weight": 5, "aliases": ["mechanical engineering", "mechanical engineer"] },
+        { "label": "AutoCAD", "weight": 4, "aliases": ["autocad"] },
+        { "label": "SolidWorks", "weight": 4, "aliases": ["solidworks", "solid works"] },
+        { "label": "CAD", "weight": 4, "aliases": ["cad", "computer aided design", "computer-aided design"] },
+        { "label": "CAM", "weight": 3, "aliases": ["cam", "computer aided manufacturing"] },
+        { "label": "Thermodynamics", "weight": 4, "aliases": ["thermodynamics"] },
+        { "label": "Fluid Mechanics", "weight": 4, "aliases": ["fluid mechanics"] },
+        { "label": "Heat Transfer", "weight": 3, "aliases": ["heat transfer"] },
+        { "label": "Manufacturing", "weight": 4, "aliases": ["manufacturing", "production"] },
+        { "label": "Quality Control", "weight": 3, "aliases": ["quality control", "quality assurance"] },
+        { "label": "Maintenance", "weight": 3, "aliases": ["maintenance", "preventive maintenance"] },
+        { "label": "CNC", "weight": 3, "aliases": ["cnc", "cnc machining"] },
+        { "label": "Design", "weight": 3, "aliases": ["design", "product design"] },
+        { "label": "Drafting", "weight": 2, "aliases": ["drafting", "technical drawing"] },
+        { "label": "Finite Element Analysis", "weight": 4, "aliases": ["finite element analysis", "fea", "ansys"] },
+        { "label": "Project Engineering", "weight": 3, "aliases": ["project engineering"] },
+        { "label": "Process Improvement", "weight": 3, "aliases": ["process improvement"] },
+        { "label": "Materials Science", "weight": 3, "aliases": ["materials science", "engineering materials"] },
+        { "label": "Production Planning", "weight": 3, "aliases": ["production planning"] },
+        { "label": "Safety Standards", "weight": 2, "aliases": ["safety standards", "industrial safety"] }
       ]
     },
-    {
-      "group": "Professional Signals",
+    "management": {
+      "label": "Management / Business",
       "keywords": [
-        { "label": "Internship", "weight": 3, "aliases": ["internship", "intern"] },
-        { "label": "Project", "weight": 2, "aliases": ["project", "projects"] },
-        { "label": "Certification", "weight": 2, "aliases": ["certification", "certifications", "certified"] },
-        { "label": "Agile", "weight": 2, "aliases": ["agile"] },
-        { "label": "Problem Solving", "weight": 2, "aliases": ["problem solving", "problem-solving"] }
+        { "label": "Management", "weight": 5, "aliases": ["management", "business management"] },
+        { "label": "Leadership", "weight": 4, "aliases": ["leadership", "team leadership"] },
+        { "label": "Communication", "weight": 4, "aliases": ["communication", "verbal communication", "written communication"] },
+        { "label": "Project Management", "weight": 5, "aliases": ["project management", "project manager"] },
+        { "label": "Operations", "weight": 4, "aliases": ["operations", "operations management"] },
+        { "label": "Marketing", "weight": 4, "aliases": ["marketing", "digital marketing"] },
+        { "label": "Sales", "weight": 4, "aliases": ["sales", "business development"] },
+        { "label": "Finance", "weight": 4, "aliases": ["finance", "financial analysis"] },
+        { "label": "Human Resources", "weight": 4, "aliases": ["human resources", "hr", "recruitment"] },
+        { "label": "Strategic Planning", "weight": 4, "aliases": ["strategic planning", "strategy"] },
+        { "label": "Market Research", "weight": 3, "aliases": ["market research"] },
+        { "label": "Customer Relationship Management", "weight": 3, "aliases": ["crm", "customer relationship management"] },
+        { "label": "Stakeholder Management", "weight": 3, "aliases": ["stakeholder management"] },
+        { "label": "Budgeting", "weight": 3, "aliases": ["budgeting", "budget management"] },
+        { "label": "Negotiation", "weight": 3, "aliases": ["negotiation", "negotiation skills"] },
+        { "label": "Business Analysis", "weight": 3, "aliases": ["business analysis", "business analyst"] },
+        { "label": "Decision Making", "weight": 3, "aliases": ["decision making", "decision-making"] },
+        { "label": "Planning", "weight": 2, "aliases": ["planning", "resource planning"] },
+        { "label": "Teamwork", "weight": 2, "aliases": ["teamwork", "team management"] },
+        { "label": "Presentation Skills", "weight": 2, "aliases": ["presentation", "presentation skills"] }
       ]
     }
-  ]
+  },
+  "general": {
+    "label": "General Resume Signals",
+    "keywords": [
+      { "label": "Internship", "weight": 3, "aliases": ["internship", "intern"] },
+      { "label": "Project", "weight": 3, "aliases": ["project", "projects"] },
+      { "label": "Certification", "weight": 3, "aliases": ["certification", "certifications", "certified"] },
+      { "label": "Problem Solving", "weight": 3, "aliases": ["problem solving", "problem-solving"] },
+      { "label": "Teamwork", "weight": 2, "aliases": ["teamwork", "team player"] },
+      { "label": "Communication", "weight": 2, "aliases": ["communication", "communication skills"] },
+      { "label": "Leadership", "weight": 2, "aliases": ["leadership", "led"] },
+      { "label": "Analytical Skills", "weight": 2, "aliases": ["analytical skills", "analysis"] },
+      { "label": "Time Management", "weight": 2, "aliases": ["time management"] },
+      { "label": "Research", "weight": 2, "aliases": ["research", "researched"] },
+      { "label": "Presentation", "weight": 2, "aliases": ["presentation", "presented"] },
+      { "label": "Training", "weight": 2, "aliases": ["training", "trained"] },
+      { "label": "Achievement", "weight": 2, "aliases": ["achievement", "achievements", "awarded"] },
+      { "label": "Volunteer", "weight": 1, "aliases": ["volunteer", "volunteering"] },
+      { "label": "Workshop", "weight": 1, "aliases": ["workshop", "seminar"] }
+    ]
+  }
 }
