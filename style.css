@@ -77,7 +77,6 @@ body {
     background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 .hero-subtitle {
@@ -86,11 +85,14 @@ body {
     line-height: 1.7;
 }
 
+/* 🔥 UPDATED DOTTED BOX COLOR */
 .upload-box {
-    border: 2px dashed #c7d2fe;
+    border: 2px dashed transparent;
     border-radius: 20px;
     padding: 22px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.82), rgba(224,231,255,0.45), rgba(252,231,243,0.42));
+    background:
+        linear-gradient(white, white) padding-box,
+        linear-gradient(135deg, #6366f1, #ec4899) border-box;
 }
 
 .upload-label {
@@ -142,8 +144,6 @@ input[type="file"] {
 .card-title {
     font-weight: 800;
     margin-bottom: 18px;
-    font-size: 1.02rem;
-    color: #1f2937;
 }
 
 .score-card {
@@ -166,7 +166,6 @@ input[type="file"] {
 
 .ring-progress {
     fill: none;
-    stroke: url(#gradientStroke);
     stroke: var(--primary);
     stroke-width: 8;
     stroke-linecap: round;
@@ -174,38 +173,27 @@ input[type="file"] {
     stroke-dashoffset: 301.59;
     transform: rotate(-90deg);
     transform-origin: 60px 60px;
-    transition: stroke-dashoffset 0.9s ease;
 }
 
-/* fixed score alignment */
 .score-center {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
-    text-align: center;
 }
 
 .score-center span {
     font-size: 3rem;
-    line-height: 1;
+    font-weight: 800;
     color: var(--primary);
 }
 
 .score-center small {
     font-size: 1.1rem;
-    line-height: 1;
     color: var(--muted);
     margin-left: 2px;
     transform: translateY(8px);
-}
-
-.score-label {
-    margin-top: 10px;
-    color: var(--muted);
-    font-weight: 600;
 }
 
 .summary-stats {
@@ -219,32 +207,6 @@ input[type="file"] {
     border-radius: 16px;
     text-align: center;
     flex: 1;
-    border: 1px solid #eef2ff;
-}
-
-.stat-value {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--primary);
-}
-
-.stat-name {
-    font-size: 0.9rem;
-    color: var(--muted);
-    margin-top: 4px;
-    display: block;
-}
-
-.check-list,
-.suggestion-list {
-    margin: 0;
-    padding-left: 20px;
-}
-
-.check-list li,
-.suggestion-list li {
-    margin-bottom: 10px;
-    line-height: 1.6;
 }
 
 .tag-wrap {
@@ -256,81 +218,35 @@ input[type="file"] {
 .tag {
     padding: 8px 12px;
     border-radius: 999px;
-    margin: 2px;
-    display: inline-block;
     font-size: 13px;
     font-weight: 700;
 }
 
 .tag.matched {
-    background: var(--success-soft);
-    color: var(--success);
-    border: 1px solid #a7f3d0;
+    background: #d1fae5;
+    color: #059669;
 }
 
 .tag.missing {
-    background: var(--danger-soft);
-    color: var(--danger);
-    border: 1px solid #fecaca;
+    background: #fee2e2;
+    color: #dc2626;
 }
 
-.good {
-    color: var(--success);
-    font-weight: 700;
-}
-
-.bad {
-    color: var(--danger);
-    font-weight: 700;
-}
-
-/* preview overflow fix */
 .preview-card {
-    margin-bottom: 24px;
     overflow: hidden;
 }
 
 .resume-preview {
-    margin: 0;
     white-space: pre-wrap;
-    word-break: break-word;
     overflow-wrap: anywhere;
-    overflow-x: hidden;
-    overflow-y: auto;
-    line-height: 1.7;
-    color: #374151;
-    background: linear-gradient(180deg, #f8fafc, #ffffff);
-    border: 1px solid var(--line);
-    border-radius: 18px;
     padding: 18px;
-    max-height: 320px;
-    width: 100%;
-    font-family: "Inter", sans-serif;
-    font-size: 14px;
-}
-
-select {
-    background: white;
-    color: var(--text);
-    outline: none;
-}
-
-select:focus {
-    border-color: var(--primary) !important;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    border-radius: 18px;
+    background: #f8fafc;
 }
 
 @media (max-width: 900px) {
     .results-grid,
     .analysis-grid {
         grid-template-columns: 1fr;
-    }
-
-    .summary-stats {
-        flex-direction: column;
-    }
-
-    .hero-card h1 {
-        font-size: 2.3rem;
     }
 }
