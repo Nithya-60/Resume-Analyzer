@@ -94,8 +94,8 @@ body {
     background: var(--card);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    backdrop-filter: blur(16px);
     border: 1px solid rgba(56, 189, 248, 0.15);
+    backdrop-filter: blur(16px);
 }
 
 .hero-card {
