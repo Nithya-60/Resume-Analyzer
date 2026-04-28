@@ -507,3 +507,22 @@ function resetUIWithError(message) {
     suggestionsEl.innerHTML = `<li>${message}</li>`;
     resumePreviewEl.textContent = "Could not extract readable text.";
 }
+const navButtons = document.querySelectorAll(".nav-btn");
+const pageSections = document.querySelectorAll(".page-section");
+
+navButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        const targetPage = button.getAttribute("data-page");
+
+        pageSections.forEach((section) => {
+            section.classList.remove("active-page");
+        });
+
+        document.getElementById(targetPage).classList.add("active-page");
+
+        navButtons.forEach((btn) => btn.classList.remove("active"));
+        document.querySelectorAll(`[data-page="${targetPage}"]`).forEach((btn) => {
+            btn.classList.add("active");
+        });
+    });
+});
