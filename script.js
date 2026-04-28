@@ -507,22 +507,57 @@ function resetUIWithError(message) {
     suggestionsEl.innerHTML = `<li>${message}</li>`;
     resumePreviewEl.textContent = "Could not extract readable text.";
 }
+const navbar = document.getElementById("navbar");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const menuLogout = document.getElementById("menuLogout");
 const navButtons = document.querySelectorAll(".nav-btn");
+const navCards = document.querySelectorAll(".nav-card");
 const pageSections = document.querySelectorAll(".page-section");
 
+function showPage(pageId) {
+    pageSections.forEach((section) => {
+        section.classList.remove("active-page");
+    });
+
+    document.getElementById(pageId).classList.add("active-page");
+
+    navButtons.forEach((button) => {
+        button.classList.remove("active");
+        if (button.dataset.page === pageId) {
+            button.classList.add("active");
+        }
+    });
+
+    if (pageId === "loginPage") {
+        navbar.classList.add("hidden");
+    } else {
+        navbar.classList.remove("hidden");
+    }
+}
+
+loginBtn.addEventListener("click", () => {
+    showPage("menuPage");
+});
+
+logoutBtn.addEventListener("click", () => {
+    showPage("loginPage");
+});
+
+menuLogout.addEventListener("click", () => {
+    showPage("loginPage");
+});
+
 navButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-        const targetPage = button.getAttribute("data-page");
-
-        pageSections.forEach((section) => {
-            section.classList.remove("active-page");
+    if (button.dataset.page) {
+        button.addEventListener("click", () => {
+            showPage(button.dataset.page);
         });
+    }
+});
 
-        document.getElementById(targetPage).classList.add("active-page");
-
-        navButtons.forEach((btn) => btn.classList.remove("active"));
-        document.querySelectorAll(`[data-page="${targetPage}"]`).forEach((btn) => {
-            btn.classList.add("active");
-        });
+navCards.forEach((card) => {
+    card.addEventListener("click", () => {
+        showPage(card.dataset.page);
     });
 });
